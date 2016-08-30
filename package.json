@@ -1,7 +1,6 @@
 {
   "name": "contact-profile",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -16,5 +15,6 @@
   "bugs": {
     "url": "https://github.com/mpduffey/contact-profile/issues"
   },
-  "homepage": "https://github.com/mpduffey/contact-profile#readme"
+  "homepage": "https://github.com/mpduffey/contact-profile#readme",
+  "description": ""
 }
