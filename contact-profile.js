@@ -9,9 +9,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var router_1 = require('@angular/router');
 var grid_1 = require('modules/grid/grid');
+var voter_service_1 = require('modules/voter-service/voter-service');
+var search_bar_1 = require('modules/search-bar/search-bar');
 var ContactProfile = (function () {
-    function ContactProfile() {
+    function ContactProfile(route, voterSvc) {
+        this.route = route;
+        this.voterSvc = voterSvc;
+        this.voter = {};
         this.person = {
             first_name: "Michael",
             middle_name: "Patrick",
@@ -85,6 +91,7 @@ var ContactProfile = (function () {
         this.oneOnOneCols = Array();
         this.houseMeetingCols = Array();
         this.volShiftsCols = Array();
+        this.voterSvc = voterSvc;
         this.oneOnOneCols = [
             new grid_1.Column('date', 'Date'),
             new grid_1.Column('type', 'Type'),
@@ -105,15 +112,28 @@ var ContactProfile = (function () {
             new grid_1.Column('completed', 'Completed')
         ];
     }
+    ContactProfile.prototype.ngOnInit = function () {
+        var _this = this;
+        this.sub = this.route.params.subscribe(function (params) {
+            var id = +params['id']; // (+) converts string 'id' to a number
+            _this.voterSvc.getVoter(id).subscribe(function (x) {
+                _this.voter = x;
+                console.log(x);
+            });
+        });
+    };
     ContactProfile = __decorate([
         core_1.Component({
             selector: 'contact-profile',
             templateUrl: 'app/modules/contact-profile/contact-profile.html',
-            styles: ["\n\t\t.form-control {\n\t\t\tdisplay: inline-block;\n\t\t}\n\t\tinput[name=\"prefix\"], input[name=\"suffix\"], input[name=\"zip\"], input[name=\"state\"] {\n\t\t\twidth: 60px;\n\t\t}\n\t\tselect.phone-type-select, input[name=\"middle-name\"] {\n\t\t\twidth: 90px;\n\t\t}\n\t\tinput[name=\"first-name\"], input[name=\"last-name\"], input[name=\"date-of-birth\"], input[name=\"city\"], select.email-type-select {\n\t\t\twidth: 100px;\n\t\t}\n\t\tinput[name=\"phone\"] {\n\t\t\twidth: 120px;\n\t\t}\n\t\tinput[name=\"email\"], input[name=\"search\"] {\n\t\t\twidth: 200px;\n\t\t}\n\t\tinput[name=\"address\"], input[name=\"address2\"] {\n\t\t\twidth: 232px;\n\t\t}\n\t\tp {\n\t\t\tmargin-bottom: 0;\n\t\t}\n\t\ti:hover {\n\t\t\tcolor: white\n\t\t}\n\t\t.header-menu i {\n\t\t\tmargin-left:\t10px;\n\t\t\tcolor:\t\t\t\t#d2d2d2;\n\t\t\tcursor:\t\t\t\tpointer;\n\t\t}\n\t\t.header-menu i:hover {\n\t\t\tcolor: white;\n\t\t}\n\t"]
+            providers: [voter_service_1.VoterService],
+            directives: [search_bar_1.SearchBar],
+            styles: ["\n\t\t:host {\n\t\t\tmax-width: 600px;\n\t\t}\n\t\t.form-control {\n\t\t\tdisplay: inline-block;\n\t\t}\n\t\tinput[name=\"prefix\"], input[name=\"suffix\"], input[name=\"zip\"], input[name=\"state\"] {\n\t\t\twidth: 60px;\n\t\t}\n\t\tselect.phone-type-select, input[name=\"middle-name\"] {\n\t\t\twidth: 90px;\n\t\t}\n\t\tinput[name=\"first-name\"], input[name=\"last-name\"], input[name=\"date-of-birth\"], input[name=\"city\"], select.email-type-select {\n\t\t\twidth: 100px;\n\t\t}\n\t\tinput[name=\"phone\"] {\n\t\t\twidth: 120px;\n\t\t}\n\t\tinput[name=\"email\"], input[name=\"search\"] {\n\t\t\twidth: 200px;\n\t\t}\n\t\tinput[name=\"address\"], input[name=\"address2\"] {\n\t\t\twidth: 232px;\n\t\t}\n\t\tp {\n\t\t\tmargin-bottom: 0;\n\t\t}\n\t\ti:hover {\n\t\t\tcolor: white\n\t\t}\n\t\t.header-menu i {\n\t\t\tmargin-left:\t10px;\n\t\t\tcolor:\t\t\t\t#d2d2d2;\n\t\t\tcursor:\t\t\t\tpointer;\n\t\t}\n\t\t.header-menu i:hover {\n\t\t\tcolor: white;\n\t\t}\n\t"]
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [router_1.ActivatedRoute, (typeof (_a = typeof voter_service_1.VoterService !== 'undefined' && voter_service_1.VoterService) === 'function' && _a) || Object])
     ], ContactProfile);
     return ContactProfile;
+    var _a;
 }());
 exports.ContactProfile = ContactProfile;
 //# sourceMappingURL=contact-profile.js.map

@@ -1,10 +1,19 @@
-import {Component, Input}	from '@angular/core';
-import {Grid, Column}			from 'modules/grid/grid';
+import {Component, Input, OnInit}	from '@angular/core';
+import {ActivatedRoute}						from '@angular/router';
+import {Grid, Column}							from 'modules/grid/grid';
+import {VoterService}							from 'modules/voter-service/voter-service';
+import {SearchBar}								from 'modules/search-bar/search-bar';
+import {Subscription}							from 'rxjs/Subscription';
 
 @Component({
 	selector:			'contact-profile',
 	templateUrl:	'app/modules/contact-profile/contact-profile.html',
-	styles: [`
+	providers:		[VoterService],
+	directives:		[SearchBar],
+	styles: 			[`
+		:host {
+			max-width: 600px;
+		}
 		.form-control {
 			display: inline-block;
 		}
@@ -43,7 +52,9 @@ import {Grid, Column}			from 'modules/grid/grid';
 	`]
 })
 
-export class ContactProfile {
+export class ContactProfile implements OnInit {
+	private sub: Subscription;
+	private voter = {};
 	person = {
 		first_name: 	"Michael",
 		middle_name:	"Patrick",
@@ -121,7 +132,8 @@ export class ContactProfile {
 	houseMeetingCols = Array<Column>;
 	volShiftsCols = Array<Column>;
 	
-	constructor() {
+	constructor(private route: ActivatedRoute, private voterSvc: VoterService) {
+		this.voterSvc = voterSvc;
 		this.oneOnOneCols = [
 			new Column('date','Date'),
 			new Column('type','Type'),
@@ -141,5 +153,14 @@ export class ContactProfile {
 			new Column('activity','Activity'),
 			new Column('completed','Completed')
 		];
+	}
+	ngOnInit() {
+		this.sub = this.route.params.subscribe(params => {
+			 let id = +params['id']; // (+) converts string 'id' to a number
+			 this.voterSvc.getVoter(id).subscribe(x => {
+				 this.voter = x;
+				 console.log(x);
+			 });
+		 });
 	}
 }

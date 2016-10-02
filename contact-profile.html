@@ -1,7 +1,8 @@
 <div class="row">
+	<search-bar></search-bar>
 	<div class="col-sm-3"><div class="text-align-center"><img class="img-circle" src="{{person.image_url}}" alt="64x64" style="height: 112px;"></div></div>
 	<div class="col-sm-9">
-		<h3 class="mt-sm mb-xs">{{person.first_name}} {{person.last_name}}</h3>
+		<h3 class="mt-sm mb-xs">{{voter.FirstName}} {{voter.LastName}}</h3>
 		<address>
 			<strong>{{person.title}}</strong> at <strong><a href={{person.company_url}} target="_blank">{{person.company}}</a></strong><br>
 			<abbr title="{{person.emails[0].type}} email">e-mail:</abbr> <a href="mailto:{{person.emails[0].value}}">{{person.emails[0].value}}</a><br>
@@ -14,21 +15,23 @@
 		<i *ngIf="!edit_personal_info" class="fa fa-pencil" style="float: right; margin-top: 7px; cursor: pointer;" (click)="edit_personal_info = !edit_personal_info"></i>
 		<div *ngIf="edit_personal_info" style="float: right; margin-top: 7px; cursor: pointer;"><i class="fa fa-floppy-o" (click)="edit_personal_info = !edit_personal_info" style="margin-right: 5px;"></i><i class="fa fa-times" style="color: red;"></i></div>
 	</legend>
-	<div *ngIf="!edit_personal_info">
+	<div>
 		<div class="col-sm-5">
-			<p>{{person.prefix}} {{person.first_name}} {{person.middle_name}} {{person.last_name}}<span *ngIf="person.suffix">, {{person.suffix}}</span></p>
-			<p>{{person.title}}</p>
-			<p>{{person.company}}</p>
+			<p>{{voter.FirstName}} {{voter.MiddleName}} {{voter.LastName}}<span *ngIf="voter.SuffixName">, {{voter.SuffixName}}</span></p>
+			<p>Title</p>
+			<p>Company</p>
 		</div>
 		<div class="col-sm-3">
-			<p>DOB: {{person.date_of_birth}}</p>
-			<p>Gender: {{person.gender}}</p>
-			<p>Ethnicity: {{person.ethnicity}}</p>
+			<p>DOB: Date of Birth</p>
+			<p>Age: {{voter.Age}}</p>
+			<p>Gender: {{voter.Gender}}</p>
+			<p>Ethnicity: {{voter.ModeledEthnicity}}</p>
 		</div>
 		<div class="col-sm-4">
-			<p>Party: {{person.party}}</p>
-			<p>Vote History: {{person.vote_history}}</p>
-			<p>Position: {{person.position}}</p>
+			<p>Observed Party: {{voter.ObservedParty}}</p>
+			<p>Calculated Party: {{voter.CalculatedParty}}</p>
+			<p>May 2016 Johnson Score: {{voter.RonJon_Score_May_2016}}</p>
+			<p>Turnout Score: {{voter.JD_Turnout_on_12G}}</p>
 		</div>
 	</div>
 </fieldset>
@@ -37,9 +40,9 @@
 		<i class="fa fa-pencil" *ngIf="!edit_contact_info" style="float: right; margin-top: 7px; cursor: pointer;" (click)="edit_contact_info = !edit_contact_info"></i>
 		<div *ngIf="edit_contact_info" style="float: right; margin-top: 7px; cursor: pointer;"><i class="fa fa-floppy-o" (click)="edit_contact_info = !edit_contact_info" style="margin-right: 5px;"></i><i class="fa fa-times" style="color: red;"></i></div>
 	</legend>
-	<div *ngIf="!edit_contact_info">
+	<div>
 		<div class="col-sm-4">
-			<p *ngFor="#phone of person.phones">{{phone.value}} <span *ngIf="phone.type">({{phone.type}})</span></p>
+			<p *ngFor="let phone of person.phones">{{phone.value}} <span *ngIf="phone.type">({{phone.type}})</span></p>
 		</div>
 		<div class="col-sm-6">
 			<p *ngFor="let email of person.emails"><a href="mailto:{{email.value}}">{{email.value}}</a> ({{email.type}})</p>
@@ -52,11 +55,23 @@
 		<div *ngIf="edit_address_info" style="float: right; margin-top: 7px; cursor: pointer;"><i class="fa fa-floppy-o" (click)="edit_address_info = false" style="margin-right: 5px;"></i><i class="fa fa-times" style="color: red;"></i></div>
 	</legend>
 	<div *ngIf="!edit_address_info">
-		<div *ngFor="let address of person.addresses" class="inline-block float-left" style="margin-right: 25px; vertical-align: top;">
-			<p style="border-bottom: solid thin white;">{{address.type}}</p>
-			<p>{{address.address}}</p>
-			<p>{{address.address2}}</p>
-			<p>{{address.city}}, {{address.state}} {{address.zip}}</p>
+		<div class="inline-block float-left col-sm-4" style="margin-right: 25px; vertical-align: top;">
+			<p style="border-bottom: solid thin white;">Primary</p>
+			<p>{{voter.PrimaryAddress1}}</p>
+			<p>{{voter.PrimaryCity}}, {{voter.PrimaryState}} {{voter.PrimaryZip}}<span *ngIf="voter.PrimaryZip4">-{{voter.PrimaryZip4}}</span></p>
+			<p>Precinct: {{voter.PrecinctName}}</p>
+			<p>Turf: {{voter.Turf}}</p>
+			<p>County: {{voter.CountyName}}</p>
+			<p>Region: {{voter.Region}}</p>
+			<p>Media Market: {{voter.DMA}}</p>
+			<p>Congressional District: {{voter.CDName}}</p>
+			<p>Legislative District: {{voter.LDName}}</p>
+			<p>State Senate District: {{voter.SDName}}</p>
+		</div>
+		<div class="col-sm-4">
+			<p style="border-bottom: solid thin white;">Secondary</p>
+			<p>{{voter.SecondaryAddress1}}</p>
+			<p>{{voter.SecondaryCity}}, {{voter.SecondaryState}} {{voter.SecondaryZip}}<span *ngIf="voter.SecondaryZip4">-{{voter.SecondaryZip4}}</span></p>
 		</div>
 	</div>
 </fieldset>
